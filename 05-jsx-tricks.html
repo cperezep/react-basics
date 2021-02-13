@@ -1,0 +1,34 @@
+<body>
+  <div id="root"></div>
+  <!-- React for creating the elements -->
+  <script src="https://unpkg.com/react@16.7.0/umd/react.production.min.js"></script>
+  <!-- ReactDOM for rendering those elements to the page -->
+  <script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js"></script>
+  <!-- Include Babel standalone -->
+  <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+
+  <script type="text/babel">
+    const rootElement = document.getElementById("root");
+    const children = "Hello World!";
+    const helloChild = "Hello ";
+    const worldChild = "World";
+    const className = "container";
+    // Interpolate that variable's value into the children position
+    /* const element = (
+      <div className={className}>
+        {helloChild}
+        {worldChild}
+      </div>
+    ); */
+
+    // One important thing to remember is that children is just a special prop that we could provide right here
+    // const element = <div className={className} children={children}></div>;
+
+    const props = { children, className };
+    // Interpolate onto this div's prop's position a spread of that prop's object.
+    // If we wanted to override one of the properties in this props object, then we could do so simply by providing it after we spread those props in the props position for this element.
+    const element = <div {...props} className="new-container" />;
+
+    ReactDOM.render(element, rootElement);
+  </script>
+</body>
