@@ -1,0 +1,34 @@
+<body>
+  <div id="root"></div>
+  <!-- React for creating the elements -->
+  <script src="https://unpkg.com/react@16.7.0/umd/react.production.min.js"></script>
+  <!-- ReactDOM for rendering those elements to the page -->
+  <script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js"></script>
+
+  <script type="text/javascript">
+    const rootElement = document.getElementById("root");
+
+    /* const element = document.createElement("div");
+    element.textContent = "Hello World!";
+    element.className = "container"; */
+
+    // We do get to specify the type of element as the first argument, but instead of getting the element and attaching properties to it, we specify those properties on creation as an object
+    const element = React.createElement("div", {
+      // If you provide another argument, that will be an additional child.
+      children: ["Hello World! ", "Other child element"],
+      className: "container",
+    });
+    console.log(element);
+    console.log(element.props);
+
+    const otherElement = React.createElement("div", {
+      // Second argument are properties
+      // Third and rest arguments are children
+      children: React.createElement("span", null, "Hello ", "World"),
+      className: "container",
+    });
+
+    /* rootElement.appendChild(element); */
+    ReactDOM.render(element, rootElement);
+  </script>
+</body>
