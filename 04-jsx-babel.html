@@ -1,0 +1,19 @@
+<body>
+  <div id="root"></div>
+  <!-- React for creating the elements -->
+  <script src="https://unpkg.com/react@16.7.0/umd/react.production.min.js"></script>
+  <!-- ReactDOM for rendering those elements to the page -->
+  <script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js"></script>
+  <!-- Include Babel standalone -->
+  <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+
+  <!-- That will compile any script tag that has the type of text/babel. Then it will create a new script tag with the compiled code with the type as text/JavaScript so that the browser can evaluate it. -->
+  <script type="text/babel">
+    const rootElement = document.getElementById("root");
+
+    // JSX syntax
+    const element = <div className="container">Hello World</div>;
+
+    ReactDOM.render(element, rootElement);
+  </script>
+</body>

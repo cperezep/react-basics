@@ -1,0 +1,27 @@
+<body>
+  <div id="root"></div>
+  <!-- React for creating the elements -->
+  <script src="https://unpkg.com/react@16.7.0/umd/react.production.min.js"></script>
+  <!-- ReactDOM for rendering those elements to the page -->
+  <script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js"></script>
+  <script type="text/javascript">
+    const rootElement = document.getElementById("root");
+
+    // Most of the community is using JSX, which is an HTML-like syntax in our JavaScript.
+
+    // JSX syntax
+    // const element = <div className="container">Hello World</div>
+    // The browser does not understand this natively. It needs to be compiled from this to something that the browser can understand. That's where Babel comes in.
+
+    // Babel compile it into
+    const element = React.createElement(
+      "div",
+      {
+        className: "container",
+      },
+      "Hello World"
+    );
+
+    ReactDOM.render(element, rootElement);
+  </script>
+</body>
