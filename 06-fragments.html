@@ -1,0 +1,32 @@
+<body>
+  <div id="root"></div>
+  <!-- React for creating the elements -->
+  <script src="https://unpkg.com/react@16.7.0/umd/react.production.min.js"></script>
+  <!-- ReactDOM for rendering those elements to the page -->
+  <script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js"></script>
+  <!-- Include Babel standalone -->
+  <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+
+  <!-- <script type="text/javascript">
+    const helloElement = React.createElement("span", null, "Hello");
+    const worldElement = React.createElement("span", null, "World");
+    const fragment = React.createElement(
+      React.Fragment,
+      null,
+      helloElement,
+      " ",
+      worldElement
+    );
+    ReactDOM.render(fragment, document.getElementById("root"));
+  </script> -->
+
+  <!-- JSX -->
+  <script type="text/babel">
+    const element = (
+      <React.Fragment>
+        <span>Hello</span> <span>World</span>
+      </React.Fragment>
+    );
+    ReactDOM.render(element, document.getElementById("root"));
+  </script>
+</body>
