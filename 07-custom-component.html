@@ -1,0 +1,30 @@
+<body>
+  <div id="root"></div>
+  <!-- React for creating the elements -->
+  <script src="https://unpkg.com/react@16.7.0/umd/react.production.min.js"></script>
+  <!-- ReactDOM for rendering those elements to the page -->
+  <script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js"></script>
+  <!-- Include Babel standalone -->
+  <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+
+  <!-- JSX -->
+  <script type="text/babel">
+    // We created our own custom function component which is a function that accepts a props object and returns more React elements.
+    // Console warning: "The tag message is unrecognized in this browser. If you meant to render a React component, start its name in an upper case letter."
+    // We had to make sure that our function component started with a capital letter so that Babel would compile this to pass the function itself to React.createElement rather than the string message to React.createElement.
+    const Message = (props) => <div className="message">{props.children}</div>;
+    const element = (
+      /* <div className="container">
+        {Message({ children: "Hello World!" })}
+        {Message({ children: "Goodbye World!" })}
+      </div> */
+
+      //  Let's go ahead and cut this out, and we'll rewrite this using JSX.
+      <div className="container">
+        <Message>Hello World!</Message>
+        <Message children="Goodbye World!" />
+      </div>
+    );
+    ReactDOM.render(element, document.getElementById("root"));
+  </script>
+</body>
