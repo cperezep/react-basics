@@ -1,0 +1,53 @@
+<body>
+  <div id="root"></div>
+  <!-- React for creating the elements -->
+  <!-- Development for validate prop-types (in production prop-types are not applied.) -->
+  <script src="https://unpkg.com/react@16.7.0/umd/react.development.js"></script>
+  <!-- ReactDOM for rendering those elements to the page -->
+  <!-- Development for validate prop-types (in production prop-types are not applied.) -->
+  <script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.development.js"></script>
+  <!-- Include Babel standalone -->
+  <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+  <!-- Creates a global variable called prop-types -->
+  <script src="https://unpkg.com/prop-types@15.6.1/prop-types.js"></script>
+
+  <!-- JSX -->
+  <script type="text/babel">
+    function SayHello({ firstName, lastName = "Unknown" }) {
+      return (
+        <div>
+          Hello {firstName} {lastName}
+        </div>
+      );
+    }
+
+    // That's going to be a function that takes the prop name and the component name
+    /* const PropTypes = {
+      string(props, propName, componentName) {
+        if (typeof props[propName] !== "string") {
+          return new Error(
+            `Hey, the component ${componentName} needs the prop ${propName} to be a string, but you passed a ${typeof props[
+              propName
+            ]}`
+          );
+        }
+      },
+    };
+
+    SayHello.propTypes = {
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+    }; */
+    // This is so common that the React team created a package on npm that we can use (PropTypes)
+
+    // React supports a feature called propTypes that allows you to validate the types of props that are being passed to your components when they're rendered.
+    SayHello.propTypes = {
+      firstName: PropTypes.string.isRequired,
+      lastName: PropTypes.string.isRequired,
+    };
+
+    const element = <SayHello firstName={false} />;
+
+    ReactDOM.render(element, document.getElementById("root"));
+  </script>
+</body>
