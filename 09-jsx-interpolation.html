@@ -1,0 +1,38 @@
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@16.12.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+  <script type="text/babel">
+    // The text "Hello world" has 11 characters
+    // The text "" has No characters
+    function CharacterCount({ text }) {
+      // When we start in the function, this is JavaScript land (We can do JavaScript functions, if statements, all of that stuff)
+      // Then when we do the return and this open parentheses, that's still JavaScript land.
+      return (
+        // We enter JSX land by doing this open-angle bracket with the tag
+        // Inside of the opening and closing tag, we're in JSX land.
+        <div>
+          {/* Opening curly brace, we're now in JavaScript land again. */}
+          {/* This is a limited JavaScript land because we can only do expressions. We're not allowed to do things like for loops, if statements, or any of that. It has to be an expression of JavaScript that evaluates to some value, It can't be a statement */}
+          {`The text "${text}" has `}
+          {text.length ? <strong>{text.length}</strong> : "No"}
+          {" characters"}
+        </div>
+        // JavaScript land again
+      );
+      // If nstead of passing this string, do some sort of if statement, that wouldn't work at all. It doesn't make any sense to pass a statement as an argument to a function.
+      // For the same reason, you can't use statements inside of the curly braces of JSX
+      // React.createElement('div', null, if (statement) {...})
+    }
+
+    const element = (
+      <>
+        <CharacterCount text="Hello World" />
+        <CharacterCount text="" />
+      </>
+    );
+
+    ReactDOM.render(element, document.getElementById("root"));
+  </script>
+</body>
