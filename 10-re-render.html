@@ -1,0 +1,30 @@
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@16.12.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+  <script type="text/babel">
+    const rootElement = document.getElementById("root");
+
+    function tick() {
+      const time = new Date().toLocaleTimeString();
+      const element = (
+        // Fragment
+        <>
+          <h4>
+            This element is not going to re-render every second because it not
+            change!
+          </h4>
+          <input value={time} />
+          <input value={time} />
+        </>
+      );
+      // When you create these React elements, you give that to ReactDOM.render or you trigger a re-render of a component, and React is going to compare the elements that you returned this time with the elements that you returned last time.
+      // It's going to do a div of those two elements, and then it will update the DOM surgically to only update the things that were different between the last time and this time you returned JSX.
+      ReactDOM.render(element, rootElement);
+    }
+
+    // Call the function every second
+    setInterval(tick, 1000);
+  </script>
+</body>
