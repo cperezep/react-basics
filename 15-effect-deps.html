@@ -1,0 +1,49 @@
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@16.12.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+  <script type="text/babel">
+    function Greeting() {
+      const [name, setName] = React.useState(
+        () => window.localStorage.getItem("name") || ""
+      );
+
+      React.useEffect(() => {
+        // This side effect doesn't need to be run because the name value hasn't changed, when the user trigger the handleClick on button
+        window.localStorage.setItem("name", name);
+        // React useEffect accepts a second argument as an optimization to combat this problem
+        // That second argument is a dependency array where you pass all the dependencies for your side effect.
+        // This is where you pass anything that you want to make sure you synchronize the state of the world with the state of our application.
+        // It's very important that you keep this dependency array accurate according to the dependencies that your callback function relies on.
+
+        // In an effort to help you avoid making mistakes here, the React team has created an ESLint plugin called eslint-plugin-react-hooks which you can use to not only ensure that the dependency array is kept up-to-date, but keep it up-to-date automatically for you using ESLint's fix feature.
+      }, [name]);
+
+      const handleChange = (event) => setName(event.target.value);
+
+      return (
+        <div>
+          <form>
+            <label htmlFor="name">Name: </label>
+            <input value={name} onChange={handleChange} id="name" />
+          </form>
+          {name ? <strong>Hello {name}</strong> : "Please type your name"}
+        </div>
+      );
+    }
+
+    function App() {
+      const [count, setCount] = React.useState(0);
+      return (
+        // Every time we click on the button, it re-renders our app component, which triggers a re-render of our greeting component.
+        <>
+          <button onClick={() => setCount((c) => c + 1)}>{count}</button>
+          <Greeting />
+        </>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</body>
