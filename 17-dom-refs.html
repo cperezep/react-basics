@@ -1,0 +1,115 @@
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@16.12.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+  <!-- Vanilla-tilt takes a DOM node and makes it react to when the user mouses over that DOM node. -->
+  <script src="https://unpkg.com/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
+  <style>
+    /*
+    Taken from the vanilla-tilt.js demo site:
+    https://micku7zu.github.io/vanilla-tilt.js/index.html
+    */
+    .tilt-root {
+      height: 150px;
+      background-color: red;
+      width: 200px;
+      background-image: -webkit-linear-gradient(
+        315deg,
+        #ff00ba 0%,
+        #fae713 100%
+      );
+      background-image: linear-gradient(135deg, #ff00ba 0%, #fae713 100%);
+      transform-style: preserve-3d;
+      will-change: transform;
+      transform: perspective(1000px) rotateX(0deg) rotateY(0deg)
+        scale3d(1, 1, 1);
+    }
+    .tilt-child {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translateZ(30px) translateX(-50%) translateY(-50%);
+      box-shadow: 0 0 50px 0 rgba(51, 51, 51, 0.3);
+      background-color: white;
+    }
+    .totally-centered {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+  <script type="text/babel">
+    function Tilt({ children }) {
+      // The DOM node we want to give it is the DOM node that's created for this element, the tilt root.
+      // Remember this is a React element, not a DOM node and React takes that React element and renders it to the DOM.
+
+      // We need React to give us the DOM node that creates for this particular React element so we can wire up vanilla-tilt to it.
+      // To do this, we're going to use a ref prop and we need to pass a ref which is an object that has a mutable current property.
+      const tiltRef = React.useRef();
+      // passing this ref to a div with a ref prop, that current property will be the DOM node that React creates for this div.
+      // We actually see undefined. The reason we see that is because at the time that this function runs, React has not created the DOM node for this div, so the tiltRef.current is currently undefined. In fact, you can initialize that current value by passing an argument to their useRef hook.
+      console.log(tiltRef.current);
+
+      // We need to have some code that runs after React has updated the DOM and set our tiltRef.current property. Interacting with the DOM is a side effect.
+      // The logical place for this would be in a React.useEffect hook.
+      React.useEffect(() => {
+        console.log(tiltRef.current);
+        const tiltNode = tiltRef.current;
+        const vanillaTiltOptions = {
+          max: 25,
+          speed: 400,
+          glare: true,
+          "max-glare": 0.5,
+        };
+        VanillaTilt.init(tiltNode, vanillaTiltOptions);
+
+        // We can return a function which will be called for every update of our tilt component. In this function, we can say tiltNode.vanillaTilt which is a property that vanilla-tilt is adding to our DOM node .destroy.
+        // This will remove all references of our DOM node from vanilla-tilt and remove all event handlers so that we can avoid memory leaks with our tilt component.
+        return () => tiltNode.vanillaTilt.destroy();
+
+        // Another thing we should do here is recognize that useEffect is going to be called on every re-render of our tilt component.
+        // That's not going to lead to any bugs but it is sub-optimal because what that means is that we're called destroy with vanilla-tilt and then we'll call init with vanilla-tilt between every render of our component.
+        // We don't need to do that because none of the things in this function can change with re-renders of our tilt component.
+        // We're going to add a dependency array here with all the dependencies of our function and because none of the variables in our useEffect callback can change. []
+        // What this is effectively saying is I want to run this when the component is initially mounted to the page and then I want to run this when the component is unmounted from the page.
+        // That's another useful optimization we can make for this case.
+      }, []);
+
+      return (
+        <div ref={tiltRef} className="tilt-root">
+          <div className="tilt-child">{children}</div>
+        </div>
+      );
+    }
+
+    function App() {
+      const [showTilt, setShowTilt] = React.useState(true);
+      return (
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              checked={showTilt}
+              onChange={(e) => setShowTilt(e.target.checked)}
+            />{" "}
+            show tilt
+          </label>
+          {/*  If we unclick the show tilt checkbox, that will unmount the tilt component from the page removing the DOM node from the page. However, there's still a bunch of event handlers on that DOM node and several references to that DOM node from within the vanilla tilt library. */}
+          {/* That means that the DOM node itself may not exist on the page but it does still exist in memory because there're references to it in vanilla-tilt. Unfortunately, this could lead to a memory leak. If we keep on mounting and unmounting this over and over and over again, then we're going to have a bunch of DOM node sitting around in memory that really aren't needed by the user anymore */}
+          {showTilt ? (
+            <Tilt>
+              <div className="totally-centered">vanilla-tilt.js</div>
+            </Tilt>
+          ) : null}
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</body>
