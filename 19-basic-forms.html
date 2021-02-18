@@ -1,0 +1,57 @@
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@16.7.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+
+  <script type="text/babel">
+    const rootElement = document.getElementById("root");
+    function UserNameForm() {
+      const usernameInputRef = React.useRef();
+
+      function handleSubmit(event) {
+        // You'll see that it does log but then we get a full page refresh
+        // The reason that this is happening is because when you submit a form in the browser, it automatically makes a post request to the current URL with the form data. We could see that if we looked at our network tab.
+        event.preventDefault();
+
+        // Our next step is to get the value out of this input
+
+        // Querying the entire document breaks the encapsulation of this component because it means that you can't use this component in the context of other components in an application. We don't want to query the document.
+        // const username = document.querySelector("input").value;
+
+        console.log(event.target);
+        // Chrome is rendering out this really cool DOM tree similar to what we see in the elements tab, but I want to see the properties that are on the form elements.
+        console.dir(event.target);
+
+        console.dir(event.target.elements);
+        // I'm not super jazzed about relying implicitly on the order in which these form elements appear because if I were to had another above, then It's going to be toast, "You entered undefined" I don't want to rely on that
+        // So, is not recommend this method, because those implicitly rely on the order in which the elements are rendered and could easily break if you change that order. Either one of these will work just fine.
+        // const usernmae = event.target[0].value;
+        // const username = event.target.elements[0].value;
+
+        // You don't need a ref for the input, that it's just easier to retrieve the input from the event target elements.
+        // const username = usernameInputRef.current.value;
+
+        //  It's recommended that you use HTML for an ID to associate labels to inputs anyway. Given that you already have to do that, this, I think, is the simplest way to get the value from the inputs in your form.
+        // Any elements that have a name property or an ID will be attached by that name and ID to this element's property of the form node.
+        // You can reference those by those names and IDs.
+        const username = event.target.elements.usernameInput.value;
+
+        alert(`You entered: ${username}`);
+      }
+
+      return (
+        // What I'm going to do instead is add an onSubmit handler here, and if somebody clicks on the submit button, or if they hit enter in this input, then our onSubmit handler is going to be called.
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="usernameInput">Username:</label>
+            <input ref={usernameInputRef} id="usernameInput" type="text" />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      );
+    }
+
+    ReactDOM.render(<UserNameForm />, rootElement);
+  </script>
+</body>
